@@ -17,7 +17,8 @@ RUN apk update && \
             build-base \
             curl-dev \
             mysql-dev \
-            tzdata
+            tzdata \
+            gcompat xz
 # 作業ディレクトリの指定
 RUN mkdir /app
 WORKDIR /app
@@ -28,6 +29,8 @@ COPY Gemfile.lock /app/Gemfile.lock
 # bundlerのバージョンを固定する
 RUN gem install bundler -v $BUNDLER_VERSION
 RUN bundle -v
+
+RUN bundle config set force_ruby_platform true
 # bunlde installを実行する
 RUN bundle install --jobs=4
 # build-packsを削除
